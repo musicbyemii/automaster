@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <button class="style-btn active" data-style="stable">
-                        <div class="mode-icon">🛡️</div>
+                        <div class="mode-icon">☁️</div>
                         Stable
                     </button>
                     <button class="style-btn" data-style="aggressive">
@@ -65,11 +65,11 @@
                 </div>
                 <div class="loading-text">
                     <span class="loading-title">Mastering your audio</span>
-                    <span class="loading-subtitle">Applying master chain...</span>
+                    <span class="loading-subtitle">Analying the buffer & applying master chain...</span>
                 </div>
                 <div class="loading-progress">
                     <div class="progress-bar">
-                        <div class="progress-fill"></div>
+                        <div class="progress-fill" id="progressBar"></div>
                     </div>
                     <span class="progress-text">Initializing...</span>
                 </div>
@@ -129,5 +129,25 @@
     <script src="https://unpkg.com/wavesurfer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="app.min.js"></script>
+    <script>const card = document.querySelector('.upload-card');
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateY = (x - centerX) / 60;
+        const rotateX = (centerY - y) / 25;
+        
+        card.style.setProperty('--rotate-x', `${rotateX}deg`);
+        card.style.setProperty('--rotate-y', `${rotateY}deg`);
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.setProperty('--rotate-x', '0deg');
+        card.style.setProperty('--rotate-y', '0deg');
+    });</script>
 </body>
 </html>
