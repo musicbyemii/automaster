@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMaster - Professional Audio Mastering</title>
+    <link rel="stylesheet" href="app.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="particles-container" id="particles"></div>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <h1><span class="highlight">Auto</span>Master</h1>
+            </div>
+            <p class="subtitle">A simple mastering tool for your music.</p>
+            <p class="ai-free-badge">100% AI-Free Processing</p>
+        </header>
+
+        <div class="upload-section">
+            <div class="upload-card">
+                <label for="audioFile" class="file-upload" id="fileUploadLabel">
+                    <div class="upload-icon-container">
+                        <svg class="upload-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+                            <path fill="currentColor" d="M16,15H8V13H16V15M16,11H8V9H16V11Z" />
+                        </svg>
+                    </div>
+                    <span class="upload-text">Drag & drop your audio file or click to browse</span>
+                    <span class="upload-hint">Supports MP3, FLAC, WAV (Max 50MB)</span>
+                    <input type="file" id="audioFile" accept=".mp3,.flac,.wav">
+                </label>
+                
+                <div class="style-selector hidden">
+                    <div class="mode-info">
+                        <div class="info-icon">i</div>
+                        <div class="info-tooltip">
+                            <strong>Stable Mode:</strong> Balanced processing for most music. <br>
+                            <strong>Aggressive Mode:</strong> Stronger compression and EQ boosts for maximum clarity.
+                        </div>
+                    </div>
+                    <button class="style-btn active" data-style="stable">
+                        <div class="mode-icon">🛡️</div>
+                        Stable
+                    </button>
+                    <button class="style-btn" data-style="aggressive">
+                        <div class="mode-icon">⚡</div>
+                        Aggressive
+                    </button>
+                </div>
+                
+                <button id="processBtn" class="process-btn hidden" disabled>
+                    <span class="btn-text">Master Audio</span>
+                    <span class="btn-icon">🎛️</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="loading-content">
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                    <div class="spinner-inner"></div>
+                </div>
+                <div class="loading-text">
+                    <span class="loading-title">Mastering your audio</span>
+                    <span class="loading-subtitle">Applying master chain...</span>
+                </div>
+                <div class="loading-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <span class="progress-text">Initializing...</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="result" class="result hidden">
+            <div class="result-header">
+                <h2>Audio Comparison</h2>
+                <div class="result-quality">
+                    <div class="quality-meter">
+                        <div class="quality-fill" style="width: 85%"></div>
+                    </div>
+                    <span class="quality-text">85% Quality Improvement</span>
+                </div>
+            </div>
+            
+            <div class="changes-list">
+                <h3>Master Chain:</h3>
+                <ul id="changesList"></ul>
+            </div>
+
+            <div class="waveform-container" style="margin-bottom: 0;">
+                <div class="waveform-header">
+                    <div class="waveform-label">Original (normalized)</div>
+                    <div class="waveform-label">Mastered</div>
+                </div>
+                <div class="waveform-comparison">
+                    <div id="originalWaveform" class="waveform"></div>
+                    <div class="waveform-divider"></div>
+                    <div id="processedWaveform" class="waveform"></div>
+                </div>
+                <div class="waveform-footer">
+                    <div class="waveform-legend">
+                        <div class="legend-item">
+                            <div class="legend-color original"></div>
+                            <span>Original (normalized)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color processed"></div>
+                            <span>Mastered</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p>Click on a waveform to play! Compare them and check which sounds better :)</p>
+            <a id="downloadLink" class="download-btn" href="#">
+                <span class="btn-text">Download</span>
+                <svg class="download-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="app.min.js"></script>
+</body>
+</html>
