@@ -99,6 +99,10 @@ h1 {
     font-weight: 300;
 }
 
+.subtitle a {
+    color: var(--text-dim);
+}
+
 .ai-free-badge {
     display: inline-block;
     background: rgba(0, 255, 157, 0.15);

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMaster - How It Works</title>
+    <link rel="stylesheet" href="app.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .how-it-works {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .step {
+            background: var(--bg-light);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: var(--bg-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .step-title {
+            font-size: 1.5rem;
+            margin: 0;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--text) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .step-content {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .step-text {
+            flex: 1;
+        }
+        
+        .step-visual {
+            width: 300px;
+            flex-shrink: 0;
+            background: var(--bg-darker);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tech-details {
+            background: var(--bg-darker);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            border: 1px solid var(--accent);
+        }
+        
+        .tech-details summary {
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tech-details[open] summary {
+            margin-bottom: 1rem;
+        }
+        
+        .eq-visual {
+            width: 100%;
+            height: 150px;
+            position: relative;
+        }
+        
+        .eq-bands {
+            display: flex;
+            height: 100%;
+            align-items: flex-end;
+            justify-content: space-around;
+        }
+        
+        .eq-band {
+            width: 30px;
+            background: var(--primary);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: height 0.8s ease-out;
+            height: 0;
+        }
+        
+        .eq-band::after {
+            content: attr(data-gain);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            background: var(--bg-dark);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .eq-band:hover::after {
+            opacity: 1;
+        }
+        
+        .eq-labels {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 0.5rem;
+        }
+        
+        .eq-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            width: 30px;
+            text-align: center;
+        }
+        
+        .compressor-visual {
+            width: 100%;
+            height: 150px;
+            position: relative;
+            background: var(--accent-dark);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .compressor-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom right, 
+                transparent 0%, 
+                transparent calc(50% - 1px), 
+                var(--primary) calc(50% - 1px), 
+                var(--primary) calc(50% + 1px), 
+                transparent calc(50% + 1px), 
+                transparent 100%);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+        
+        .compressor-curve {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 2;
+        }
+        
+        .compressor-threshold {
+            position: absolute;
+            left: 50%;
+            width: 1px;
+            height: 100%;
+            background: var(--text);
+            opacity: 0.5;
+        }
+        
+        .compressor-knee {
+            position: absolute;
+            left: 40%;
+            right: 40%;
+            height: 100%;
+            border-left: 1px dashed var(--text);
+            border-right: 1px dashed var(--text);
+            opacity: 0.5;
+        }
+        
+        .privacy-section {
+            background: var(--bg-light);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin: 3rem 0;
+            border: 1px solid rgba(0, 255, 157, 0.3);
+            text-align: center;
+        }
+        
+        .privacy-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            .step-content {
+                flex-direction: column;
+            }
+            
+            .step-visual {
+                width: 100%;
+            }
+            
+            .how-it-works {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles-container" id="particles"></div>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <h1><span class="highlight">How</span> It Works</h1>
+            </div>
+            <p class="subtitle">Understanding the AutoMaster processing chain</p>
+        </header>
+
+        <div class="how-it-works" style="margin-top: -40px;">
+            <p>AutoMaster applies a series of audio processing to your tracks entirely in your browser. Here's a detailed breakdown of what happens when you master your audio:</p>
+            
+            <div class="process-steps">
+                <div class="step" id="step1">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <h2 class="step-title">Audio Analysis & Normalization</h2>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-text">
+                            <p>When you upload your audio, AutoMaster first analyzes the overall loudness using RMS (root mean square) calculation. It then normalizes the audio to a standard level for consistent processing.</p>
+                            <p>This ensures your track will have a balanced starting point before applying other mastering effects.</p>
+                            <div class="tech-details">
+                                <summary>Technical Details</summary>
+                                <p>The analyzer calculates RMS loudness and applies gain compensation. The audio is decoded into a raw PCM format at its original sample rate (up to 192kHz) with 32-bit floating point precision for all processing.</p>
+                            </div>
+                        </div>
+                        <div class="step-visual">
+                            <div style="text-align: center;">
+                                <div style="font-size: 3rem;">🔍</div>
+                                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim);">Analyzing loudness and waveform</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step" id="step2">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <h2 class="step-title">Frequency Balancing</h2>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-text">
+                            <p>AutoMaster applies a multi-stage equalizer to enhance your mix's frequency balance:</p>
+                            <ul>
+                                <li><strong>High-pass filter</strong> removes unnecessary low-end rumble below 28Hz with a steep slope (Q=4.0)</li>
+                                <li><strong>Low-pass filter</strong> gently tames frequencies above 16.5kHz</li>
+                                <li><strong>Bass boost</strong> (+3dB at 100Hz lowshelf)</li>
+                                <li><strong>Mid boost</strong> (+2dB at 1kHz peaking)</li>
+                                <li><strong>Adaptive treble boost</strong> (1-7dB at 4kHz highshelf based on high frequency content analysis)</li>
+                            </ul>
+                            <div class="tech-details">
+                                <summary>Technical Details</summary>
+                                <p>Uses Web Audio API's BiquadFilterNodes with carefully tuned parameters. The adaptive treble boost analyzes spectral energy above 4kHz and applies compensation based on the detected high frequency content.</p>
+                            </div>
+                        </div>
+                        <div class="step-visual">
+                            <div class="eq-visual">
+                                <div class="eq-bands">
+                                    <div class="eq-band" data-gain="+3dB" style="height: 60%;"></div>
+                                    <div class="eq-band" data-gain="+2dB" style="height: 45%;"></div>
+                                    <div class="eq-band" data-gain="+5dB" style="height: 80%;"></div>
+                                </div>
+                                <div class="eq-labels">
+                                    <div class="eq-label">100Hz</div>
+                                    <div class="eq-label">1kHz</div>
+                                    <div class="eq-label">4kHz</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step" id="step3">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <h2 class="step-title">Dynamic Control</h2>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-text">
+                            <p>A professional-grade compressor smooths out volume fluctuations:</p>
+                            <ul>
+                                <li><strong>Threshold</strong> at -24dB</li>
+                                <li><strong>Knee</strong> at 10dB for smooth compression</li>
+                                <li><strong>Ratio</strong> of 3:1 (stable mode) or 4:1 (aggressive mode)</li>
+                                <li><strong>Fast attack</strong> (10ms) to catch transients</li>
+                                <li><strong>Musical release</strong> (250ms) for natural decay</li>
+                            </ul>
+                            <div class="tech-details">
+                                <summary>Technical Details</summary>
+                                <p>Uses Web Audio API's DynamicsCompressorNode with carefully tuned parameters. The compression is applied after EQ to ensure frequency-balanced dynamics control.</p>
+                            </div>
+                        </div>
+                        <div class="step-visual">
+                            <div class="compressor-visual">
+                                <div class="compressor-line"></div>
+                                <svg class="compressor-curve" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <path d="M0,100 C20,90 40,80 50,50 C60,20 80,10 100,0" />
+                                </svg>
+                                <div class="compressor-threshold" style="left: 50%;"></div>
+                                <div class="compressor-knee" style="left: 40%; right: 40%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step" id="step4">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <h2 class="step-title">Stereo Imaging</h2>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-text">
+                            <p>AutoMaster analyzes and optimizes your stereo field:</p>
+                            <ul>
+                                <li><strong>Stereo correlation analysis</strong> to detect phase issues</li>
+                                <li><strong>Adaptive stereo adjustment</strong> - if stereo width is too extreme (>0.8 correlation), brings it 75% towards center</li>
+                                <li><strong>StereoPannerNode</strong> used for precise stereo control</li>
+                            </ul>
+                            <div class="tech-details">
+                                <summary>Technical Details</summary>
+                                <p>Calculates inter-channel correlation coefficient and applies mid-side processing when needed. Uses StereoPannerNode with adaptive panning values based on L/R channel difference analysis.</p>
+                            </div>
+                        </div>
+                        <div class="step-visual">
+                            <div style="text-align: center; width: 100%;">
+                                <div style="position: relative; width: 150px; height: 150px; margin: 0 auto;">
+                                    <div style="position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--accent);"></div>
+                                    <div style="position: absolute; width: 80%; height: 80%; border-radius: 50%; border: 2px solid var(--accent); top: 10%; left: 10%;"></div>
+                                    <div style="position: absolute; width: 60%; height: 60%; border-radius: 50%; border: 2px solid var(--primary); top: 20%; left: 20%;"></div>
+                                    <div style="position: absolute; width: 10px; height: 10px; background: var(--primary); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+                                </div>
+                                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim);">Stereo field visualization</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step" id="step5">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <h2 class="step-title">Final Limiting & Export</h2>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-text">
+                            <p>After all processing, AutoMaster applies final adjustments:</p>
+                            <ul>
+                                <li><strong>Loudness normalization</strong> to streaming standard levels</li>
+                                <li><strong>16-bit conversion</strong> with proper dithering</li>
+                                <li><strong>WAV format</strong> with correct headers and metadata</li>
+                            </ul>
+                            <p>The result is a professionally mastered track ready for distribution, all without ever uploading your audio to any server.</p>
+                            <div class="tech-details">
+                                <summary>Technical Details</summary>
+                                <p>Uses gain staging with multiple passes through the Web Audio API's OfflineAudioContext for sample-accurate processing. Final output is rendered to 16-bit WAV format with proper headers and metadata.</p>
+                            </div>
+                        </div>
+                        <div class="step-visual">
+                            <div style="text-align: center;">
+                                <div style="font-size: 3rem;">🎚️</div>
+                                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim);">Final output processing</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="privacy-section">
+                <div class="privacy-icon">🔒</div>
+                <h2>Your Privacy Matters</h2>
+                <p><strong>All processing happens 100% in your browser</strong> - your audio files never leave your device or get sent to any server.</p>
+                <p>The complete source code is available on <a href="https://github.com/musicbyemii/automaster" target="_blank" style="color: var(--primary);">GitHub</a> for full transparency.</p>
+                <p>While AutoMaster provides professional-quality results, it may not match a human mastering engineer's nuanced approach. It's perfect for beginners or when you need quick, free mastering for demos or releases.</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="index.html" class="download-btn" style="display: inline-flex;">
+                    <span class="btn-text">Try AutoMaster Now</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize particles
+        particlesJS("particles", {
+            "particles": {
+                "number": { "value": 40, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#00ff9d" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.3, "random": true },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#00ff9d", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+            },
+            "interactivity": {
+                "events": { "onhover": { "enable": true, "mode": "grab" } },
+                "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.5 } } }
+            }
+        });
+        
+        // Animate steps on scroll
+        const steps = document.querySelectorAll('.step');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        steps.forEach(step => {
+            observer.observe(step);
+        });
+        
+        // Animate EQ bands
+        setTimeout(() => {
+            document.querySelectorAll('.eq-band').forEach(band => {
+                band.style.transition = 'height 0.8s ease-out';
+            });
+        }, 100);
+    </script>
+</body>
+</html>
